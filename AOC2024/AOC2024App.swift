@@ -1,17 +1,15 @@
-//
-//  AOC2024App.swift
-//  AOC2024
-//
-//  Created by Richard Pineo on 12/1/24.
-//
 
 import SwiftUI
+import AOCLib
 
 @main
 struct AOC2024App: App {
+	let puzzles = Puzzles2024()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+			MainView(repo: puzzles)
+				.environmentObject(PuzzleProcessing.application(puzzles: puzzles.puzzles))
         }
     }
 }

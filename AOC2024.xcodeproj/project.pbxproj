@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BF247C3B2CFD496A006FF4DE /* AOCLib in Frameworks */ = {isa = PBXBuildFile; productRef = BF247C3A2CFD496A006FF4DE /* AOCLib */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		BF5A38992CFD46B9007D940A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +33,25 @@
 		BF5A38A22CFD46B9007D940A /* AOC2024UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AOC2024UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		BF5A38B92CFD479F007D940A /* Exceptions for "AOC2024" folder in "AOC2024Tests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Puzzles/1/Example1.txt,
+				Puzzles/1/Input1.txt,
+				Puzzles/1/Solve1.swift,
+				Puzzles2024.swift,
+			);
+			target = BF5A38972CFD46B9007D940A /* AOC2024Tests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BF5A388A2CFD46B8007D940A /* AOC2024 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BF5A38B92CFD479F007D940A /* Exceptions for "AOC2024" folder in "AOC2024Tests" target */,
+			);
 			path = AOC2024;
 			sourceTree = "<group>";
 		};
@@ -52,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF247C3B2CFD496A006FF4DE /* AOCLib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +93,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF247C392CFD496A006FF4DE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		BF5A387F2CFD46B8007D940A = {
 			isa = PBXGroup;
 			children = (
 				BF5A388A2CFD46B8007D940A /* AOC2024 */,
 				BF5A389B2CFD46B9007D940A /* AOC2024Tests */,
 				BF5A38A52CFD46B9007D940A /* AOC2024UITests */,
+				BF247C392CFD496A006FF4DE /* Frameworks */,
 				BF5A38892CFD46B8007D940A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,6 +141,7 @@
 			);
 			name = AOC2024;
 			packageProductDependencies = (
+				BF247C3A2CFD496A006FF4DE /* AOCLib */,
 			);
 			productName = AOC2024;
 			productReference = BF5A38882CFD46B8007D940A /* AOC2024.app */;
@@ -195,6 +225,9 @@
 			);
 			mainGroup = BF5A387F2CFD46B8007D940A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BF5A38B52CFD474E007D940A /* XCRemoteSwiftPackageReference "AOCLib" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BF5A38892CFD46B8007D940A /* Products */;
 			projectDirPath = "";
@@ -558,6 +591,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BF5A38B52CFD474E007D940A /* XCRemoteSwiftPackageReference "AOCLib" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/richardpineo/AOCLib.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BF247C3A2CFD496A006FF4DE /* AOCLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF5A38B52CFD474E007D940A /* XCRemoteSwiftPackageReference "AOCLib" */;
+			productName = AOCLib;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BF5A38802CFD46B8007D940A /* Project object */;
 }

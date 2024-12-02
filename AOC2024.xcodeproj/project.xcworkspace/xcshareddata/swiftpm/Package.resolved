@@ -1,0 +1,15 @@
+{
+  "originHash" : "7ac8b38a9a8dfd5a54be6f8e791a1255f026059a10adebbd0dd5f8525298cc36",
+  "pins" : [
+    {
+      "identity" : "aoclib",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/richardpineo/AOCLib.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "7eb83ffb34bf9a3e077ba3a2ae05529e5836ecad"
+      }
+    }
+  ],
+  "version" : 3
+}
