@@ -41,6 +41,7 @@
 				Puzzles/1/Input1.txt,
 				Puzzles/1/Solve1.swift,
 				Puzzles/2/Solve2.swift,
+				Puzzles/3/Solve3.swift,
 				Puzzles2024.swift,
 			);
 			target = BF5A38972CFD46B9007D940A /* AOC2024Tests */;
