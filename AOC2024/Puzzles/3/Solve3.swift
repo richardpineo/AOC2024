@@ -9,11 +9,11 @@ class Solve3: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example3") == 48
+		solveB("Example3b") == 48
 	}
 
 	var answerA = "187833789"
-	var answerB = ""
+	var answerB = "94455185"
 
 	func solveA() -> String {
 		solveA("Input3").description
@@ -52,7 +52,19 @@ class Solve3: PuzzleSolver {
 	}
 
 	func solveB(_ fileName: String) -> Int {
-		let lines = FileHelper.loadAndTokenize(fileName).filter { !$0.isEmpty }
-		return lines.count
+		let lines = FileHelper.load(fileName)!.filter { !$0.isEmpty }
+		let lineString = lines.joined()
+	
+		let components = lineString.components(separatedBy: "don't()")
+		var enabled: Array<String> = .init(repeating: components[0], count: 1)
+		
+		for index in 1 ..< components.count {
+			let enabledComponents = components[index].components(separatedBy: "do()")
+			enabled.append(contentsOf: enabledComponents.dropFirst())
+		}
+		
+		return enabled.reduce(0) { sum, line in
+			return sum + sumFor(line)
+		}
 	}
 }
