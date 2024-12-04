@@ -7,9 +7,9 @@ class Puzzles2024: PuzzlesRepo {
 		let year = 2024
 
 		puzzles = Puzzles(puzzles: [
-			Puzzle(year: year, id: 1, name: "Trebuchet?!") { Solve1() },
+			Puzzle(year: year, id: 1, name: "Historian Hysteria") { Solve1() },
+			Puzzle(year: year, id: 2, name: "Red-Nosed Reports") { Solve2() },
 /*
-			Puzzle(year: year, id: 2, name: "Cube Conundrum") { Solve2() },
 			Puzzle(year: year, id: 3, name: "Gear Ratios") { Solve3() },
 			Puzzle(year: year, id: 4, name: "Scratchcards") { Solve4() },
 			Puzzle(year: year, id: 5, name: "If You Give A Seed A Fertilizer") { Solve5() },
