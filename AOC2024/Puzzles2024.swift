@@ -9,6 +9,7 @@ class Puzzles2024: PuzzlesRepo {
 		puzzles = Puzzles(puzzles: [
 			Puzzle(year: year, id: 1, name: "Historian Hysteria") { Solve1() },
 			Puzzle(year: year, id: 2, name: "Red-Nosed Reports") { Solve2() },
+			Puzzle(year: year, id: 3, name: "Mull It Over") { Solve3() },
 /*
 			Puzzle(year: year, id: 3, name: "Gear Ratios") { Solve3() },
 			Puzzle(year: year, id: 4, name: "Scratchcards") { Solve4() },
