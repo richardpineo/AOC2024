@@ -8,11 +8,11 @@ class Solve4: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example4") == 0
+		solveB("Example4") == 9
 	}
 
 	var answerA = "2639"
-	var answerB = "0"
+	var answerB = "2005"
 
 	func solveA() -> String {
 		solveA("Input4").description
@@ -55,6 +55,20 @@ class Solve4: PuzzleSolver {
 	}
 
 	func solveB(_ fileName: String) -> Int {
-		0
+		let grid = Grid2D(fileName: fileName)
+		return grid.allPositions.reduce(0) { count, pos in
+			if grid.value(pos) != "A" {
+				return count
+			}
+			
+			let neighbors = [pos.offset(-1, -1), pos.offset(-1, 1), pos.offset(1, 1), pos.offset(1, -1)]
+			if !neighbors.allSatisfy(grid.valid) {
+				return count
+			}
+			
+			let word = neighbors.map { String(grid.value($0)) }.joined()
+			let match = ["MMSS", "MSSM", "SSMM", "SMMS"].contains(word)
+			return count + (match ? 1 : 0)
+		}
 	}
 }
