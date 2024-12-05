@@ -1,6 +1,7 @@
 
 import AOCLib
 import Foundation
+import Algorithms
 
 class Solve5: PuzzleSolver {
 	func solveAExamples() -> Bool {
@@ -8,11 +9,11 @@ class Solve5: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example5") == 0
+		solveB("Example5") == 123
 	}
 
 	var answerA = "4924"
-	var answerB = ""
+	var answerB = "6085"
 
 	struct Ordering {
 		var first: Int
@@ -51,7 +52,6 @@ class Solve5: PuzzleSolver {
 		for index in 0 ..< pages.count {
 			let applicable = orderings.filter { $0.second == pages[index] }
 			for check in (index + 1) ..< pages.count {
-
 				if applicable.contains(where: { $0.first == pages[check] }) {
 					return false
 				}
@@ -74,7 +74,24 @@ class Solve5: PuzzleSolver {
 		}
 	}
 
+	func correct(_ pages: [Int], _ orderings: [Ordering]) -> [Int] {
+		var ordered = pages
+		ordered.sort { a, b in
+			let applicable = orderings.filter { $0.second == a }
+			if applicable.contains(where: { $0.first == b }) {
+				return false
+			}
+			return true
+		}
+		return ordered
+	}
+	
 	func solveB(_ fileName: String) -> Int {
-		0
+		let job = load(fileName)
+		let failed = job.pages.filter { !passes(job.orderings, $0) }
+		let corrected = failed.map { correct($0, job.orderings) }
+		return corrected.reduce(0) { count, pages in
+			count + middlePage(pages: pages)
+		}
 	}
 }
