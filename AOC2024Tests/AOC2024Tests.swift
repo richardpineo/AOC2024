@@ -5,7 +5,7 @@ import Testing
 
 struct Test2024 {
 	@Test func testOne() async throws {
-		testOne(Solve4())
+		testOne(Solve5())
 	}
 
 	@Test func testAll() async throws {

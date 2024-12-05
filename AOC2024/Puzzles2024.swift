@@ -11,8 +11,8 @@ class Puzzles2024: PuzzlesRepo {
 			Puzzle(year: year, id: 2, name: "Red-Nosed Reports") { Solve2() },
 			Puzzle(year: year, id: 3, name: "Mull It Over") { Solve3() },
 			Puzzle(year: year, id: 4, name: "Ceres Search") { Solve4() },
+			Puzzle(year: year, id: 5, name: "Print Queue") { Solve5() },
 /*
-			Puzzle(year: year, id: 5, name: "If You Give A Seed A Fertilizer") { Solve5() },
 			Puzzle(year: year, id: 6, name: "Wait For It") { Solve6() },
 			Puzzle(year: year, id: 7, name: "Camel Cards") { Solve7() },
 			Puzzle(year: year, id: 8, name: "Haunted Wasteland") { Solve8() },
