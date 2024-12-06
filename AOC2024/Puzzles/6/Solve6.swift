@@ -8,11 +8,11 @@ class Solve6: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example6") == 0
+		solveB("Example6") == 6
 	}
 
 	var answerA = "5564"
-	var answerB = ""
+	var answerB = "1976"
 
 	func solveA() -> String {
 		solveA("Input6").description
@@ -24,34 +24,97 @@ class Solve6: PuzzleSolver {
 	
 	func solveA(_ fileName: String) -> Int {
 		let grid = Grid2D(fileName: fileName)
-		var pos = grid.allPositions.first {
+		let result = traverse(grid: grid)
+		if result.looped {
+			return 0
+		}
+		var positions = Set<Position2D>()
+		for bearing in result.visited {
+			positions.insert(bearing.position)
+		}
+		return positions.count
+	}
+	
+	@DebugDescription
+	struct Bearing: Hashable {
+		var position: Position2D
+		var heading: Heading
+		
+		// Does not change the heading of the original bearing.
+		func offset(_ inDirection: Heading, _ distance: Int = 1) -> Bearing {
+			.init(position: position.offset(inDirection, distance), heading: heading)
+		}
+		
+		func move(_ distance: Int = 1) -> Bearing {
+			.init(position: position.offset(heading, distance), heading: heading)
+		}
+		
+		var debugDescription: String {
+			"Bearing \(heading) at \(position.displayString)"
+		  }
+	}
+	
+	func startingFrom(grid: Grid2D) -> Bearing {
+		let startingPos = grid.allPositions.first {
 			grid.value($0) == "^"
 		}!
-		var heading: Heading = .north
-
-		var visited: Set<Position2D> = .init()
-		
-		while grid.valid(pos) {
-			let nextDelta: Position2D = switch heading {
-			case .north: .init(0, -1)
-			case .east: .init(1, 0)
-			case .south: .init(0, 1)
-			case .west: .init(-1, 0)
-			}
-			
-			let newPos = pos + nextDelta
-			if grid.safeValue(newPos) == "#" {
-				heading = heading.rightwards
-			} else {
-				visited.insert(pos)
-				pos = newPos
-			}
-		}
-
-		return visited.count
+		return .init(position: startingPos, heading: .north)
 	}
 
+	struct Result {
+		var looped: Bool
+		var visited: [Bearing]
+	}
+	
+	func traverse(grid: Grid2D) -> Result {
+		var bearing: Bearing = startingFrom(grid: grid)
+		
+		var visited: Set<Bearing> = .init()
+		while grid.valid(bearing.position) {
+			if visited.contains(bearing) {
+				return .init(looped: true, visited: Array(visited))
+			}
+			visited.insert(bearing)
+
+			let newBearing = bearing.move()
+			if grid.safeValue(newBearing.position) == "#" {
+				bearing = .init(position: bearing.position, heading: bearing.heading.rightwards)
+			} else {
+				bearing = newBearing
+			}
+		}
+		return .init(looped: false, visited: Array(visited))
+	}
+	
 	func solveB(_ fileName: String) -> Int {
-		0
+		let grid = Grid2D(fileName: fileName)
+		let bearing: Bearing = startingFrom(grid: grid)
+
+		let traversed = traverse(grid: grid)
+		
+		let possibleObstructions = grid.allPositions.filter { possible in
+			if possible == bearing.position {
+				return false
+			}
+			if grid.value(possible) == "#" {
+				return false
+			}
+			if !traversed.visited.contains(where: { $0.position == possible }) {
+				return false
+			}
+			return true
+		}
+
+		let actual = possibleObstructions.filter {
+			makesLoop(grid, $0)
+		}
+		return actual.count
+	}
+	
+	private func makesLoop(_ grid: Grid2D, _ pos: Position2D) -> Bool {
+		var loopCheck = grid.clone()
+		loopCheck.setValue(pos, "#")
+		let result = traverse(grid: loopCheck)
+		return result.looped
 	}
 }
