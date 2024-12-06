@@ -11,7 +11,7 @@ class Solve6: PuzzleSolver {
 		solveB("Example6") == 0
 	}
 
-	var answerA = ""
+	var answerA = "5564"
 	var answerB = ""
 
 	func solveA() -> String {
@@ -29,6 +29,8 @@ class Solve6: PuzzleSolver {
 		}!
 		var heading: Heading = .north
 
+		var visited: Set<Position2D> = .init()
+		
 		while grid.valid(pos) {
 			let nextDelta: Position2D = switch heading {
 			case .north: .init(0, -1)
@@ -37,12 +39,16 @@ class Solve6: PuzzleSolver {
 			case .west: .init(-1, 0)
 			}
 			
-			if grid.safeValue(pos.offset(nextDelta)) == "#" {
-				
+			let newPos = pos + nextDelta
+			if grid.safeValue(newPos) == "#" {
+				heading = heading.rightwards
+			} else {
+				visited.insert(pos)
+				pos = newPos
 			}
 		}
 
-		return startingPos!.x
+		return visited.count
 	}
 
 	func solveB(_ fileName: String) -> Int {
