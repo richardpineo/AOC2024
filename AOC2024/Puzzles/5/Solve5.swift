@@ -1,7 +1,6 @@
 
 import AOCLib
 import Foundation
-import Algorithms
 
 class Solve5: PuzzleSolver {
 	func solveAExamples() -> Bool {
