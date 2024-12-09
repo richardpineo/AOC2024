@@ -13,8 +13,8 @@ class Puzzles2024: PuzzlesRepo {
 			Puzzle(year: year, id: 4, name: "Ceres Search") { Solve4() },
 			Puzzle(year: year, id: 5, name: "Print Queue") { Solve5() },
 			Puzzle(year: year, id: 6, name: "Guard Gallivant") { Solve6() },
+			Puzzle(year: year, id: 7, name: "Bridge Repair") { Solve7() },
 /*
-			Puzzle(year: year, id: 7, name: "Camel Cards") { Solve7() },
 			Puzzle(year: year, id: 8, name: "Haunted Wasteland") { Solve8() },
 			Puzzle(year: year, id: 9, name: "Mirage Maintenance") { Solve9() },
 			Puzzle(year: year, id: 10, name: "Pipe Maze") { Solve10() },
