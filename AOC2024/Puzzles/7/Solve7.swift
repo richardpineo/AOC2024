@@ -9,11 +9,11 @@ class Solve7: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example7") == 0
+		solveB("Example7") == 11387
 	}
 
 	var answerA = "3351424677624"
-	var answerB = ""
+	var answerB = "204976636995111"
 
 	func solveA() -> String {
 		solveA("Input7").description
@@ -52,41 +52,52 @@ class Solve7: PuzzleSolver {
 		}
 	}
 	
-	func passes(_ equation: Equation) -> Bool {
-		if equation.value < 0 {
+	func passes(_ equation: Equation, value: Int, tryConcatenate: Bool) -> Bool {
+		if equation.value < value {
 			return false
 		}
 		if equation.components.count == 0 {
-			return equation.value == 0
+			return equation.value == value
 		}
 
-		let last = equation.components.last!
-		let newComponents = Array(equation.components.dropLast())
+		let first = equation.components.first!
+		let newComponents = Array(equation.components.dropFirst())
+
+		if value == 0 {
+			return passes(.init(value: equation.value, components: newComponents), value: first, tryConcatenate: tryConcatenate)
+		}
 		
 		// try both
-		if passes(.init(value: equation.value - last, components: newComponents)) {
+		if passes(.init(value: equation.value, components: newComponents), value: value + first, tryConcatenate: tryConcatenate) {
 			return true
 		}
-		if !equation.value.isMultiple(of: last) {
-			return false
-		}
-		if passes(.init(value: equation.value / last, components: newComponents)) {
+		if passes(.init(value: equation.value, components: newComponents), value: value * first, tryConcatenate: tryConcatenate) {
 			return true
+		}
+		if tryConcatenate {
+			let nextValue = Int(String(value) + String(first))!
+			if passes(.init(value: equation.value, components: newComponents), value: nextValue, tryConcatenate: tryConcatenate) {
+				return true
+			}
 		}
 		return false
 	}
-	
-	func solveA(_ fileName: String) -> Int {
+
+	func solve(_ fileName: String, tryConcatenate: Bool) -> Int {
 		let equations = load(fileName: fileName)
 		
 		return equations.reduce(0) { sum, equation in
-			let passed = passes(equation)
+			let passed = passes(equation, value: 0, tryConcatenate: tryConcatenate)
 			// print("Equation with value \(equation.value) \(passed ? "Passed" : "Failed")")
 			return sum + (passed ? equation.value : 0)
 		}
 	}
 	
+	func solveA(_ fileName: String) -> Int {
+		solve(fileName, tryConcatenate: false)
+	}
+	
 	func solveB(_ fileName: String) -> Int {
-		0
+		solve(fileName, tryConcatenate: true)
 	}
 }
