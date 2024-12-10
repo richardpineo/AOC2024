@@ -22,7 +22,7 @@ class Solve3: PuzzleSolver {
 	func solveB() -> String {
 		solveB("Input3").description
 	}
-	
+
 	private let mulToken = Regex {
 		One("mul(")
 		Capture {
@@ -47,24 +47,24 @@ class Solve3: PuzzleSolver {
 	func solveA(_ fileName: String) -> Int {
 		let lines = FileHelper.load(fileName)!.filter { !$0.isEmpty }
 		return lines.reduce(0) { sum, line in
-			return sum + sumFor(line)
+			sum + sumFor(line)
 		}
 	}
 
 	func solveB(_ fileName: String) -> Int {
 		let lines = FileHelper.load(fileName)!.filter { !$0.isEmpty }
 		let lineString = lines.joined()
-	
+
 		let components = lineString.components(separatedBy: "don't()")
-		var enabled: Array<String> = .init(repeating: components[0], count: 1)
-		
+		var enabled: [String] = .init(repeating: components[0], count: 1)
+
 		for index in 1 ..< components.count {
 			let enabledComponents = components[index].components(separatedBy: "do()")
 			enabled.append(contentsOf: enabledComponents.dropFirst())
 		}
-		
+
 		return enabled.reduce(0) { sum, line in
-			return sum + sumFor(line)
+			sum + sumFor(line)
 		}
 	}
 }

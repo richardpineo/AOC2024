@@ -21,7 +21,7 @@ class Solve6: PuzzleSolver {
 	func solveB() -> String {
 		solveB("Input6").description
 	}
-	
+
 	func solveA(_ fileName: String) -> Int {
 		let grid = Grid2D(fileName: fileName)
 		let result = traverse(grid: grid)
@@ -34,7 +34,7 @@ class Solve6: PuzzleSolver {
 		}
 		return positions.count
 	}
-	
+
 	func startingFrom(grid: Grid2D) -> Bearing {
 		let startingPos = grid.allPositions.first {
 			grid.value($0) == "^"
@@ -46,10 +46,10 @@ class Solve6: PuzzleSolver {
 		var looped: Bool
 		var visited: [Bearing]
 	}
-	
+
 	func traverse(grid: Grid2D) -> Result {
 		var bearing: Bearing = startingFrom(grid: grid)
-		
+
 		var visited: Set<Bearing> = .init()
 		while grid.valid(bearing.position) {
 			if visited.contains(bearing) {
@@ -66,13 +66,13 @@ class Solve6: PuzzleSolver {
 		}
 		return .init(looped: false, visited: Array(visited))
 	}
-	
+
 	func solveB(_ fileName: String) -> Int {
 		let grid = Grid2D(fileName: fileName)
 		let bearing: Bearing = startingFrom(grid: grid)
 
 		let traversed = traverse(grid: grid)
-		
+
 		let possibleObstructions = grid.allPositions.filter { possible in
 			if possible == bearing.position {
 				return false
@@ -91,7 +91,7 @@ class Solve6: PuzzleSolver {
 		}
 		return actual.count
 	}
-	
+
 	private func makesLoop(_ grid: Grid2D, _ pos: Position2D) -> Bool {
 		var loopCheck = grid.clone()
 		loopCheck.setValue(pos, "#")

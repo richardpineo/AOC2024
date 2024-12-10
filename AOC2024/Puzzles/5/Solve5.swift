@@ -18,12 +18,12 @@ class Solve5: PuzzleSolver {
 		var first: Int
 		var second: Int
 	}
-	
+
 	class Job {
 		var orderings: [Ordering] = []
 		var pages: [[Int]] = []
 	}
-	
+
 	func load(_ fileName: String) -> Job {
 		let lines = FileHelper.load(fileName)!
 		let pageBreak = lines.firstIndex { $0.isEmpty }!
@@ -32,13 +32,13 @@ class Solve5: PuzzleSolver {
 			let ordering = lines[index].split(separator: "|")
 			job.orderings.append(.init(first: Int(ordering[0])!, second: Int(ordering[1])!))
 		}
-		for index in (pageBreak+1) ..< lines.count {
+		for index in (pageBreak + 1) ..< lines.count {
 			let pages = lines[index].split(separator: ",")
-			job.pages.append(pages.map { Int($0)! } )
+			job.pages.append(pages.map { Int($0)! })
 		}
 		return job
 	}
-	
+
 	func solveA() -> String {
 		solveA("Input5").description
 	}
@@ -46,7 +46,7 @@ class Solve5: PuzzleSolver {
 	func solveB() -> String {
 		solveB("Input5").description
 	}
-	
+
 	func passes(_ orderings: [Ordering], _ pages: [Int]) -> Bool {
 		for index in 0 ..< pages.count {
 			let applicable = orderings.filter { $0.second == pages[index] }
@@ -58,11 +58,11 @@ class Solve5: PuzzleSolver {
 		}
 		return true
 	}
-	
+
 	func middlePage(pages: [Int]) -> Int {
-		pages[pages.count/2]
+		pages[pages.count / 2]
 	}
-	
+
 	func solveA(_ fileName: String) -> Int {
 		let job = load(fileName)
 		return job.pages.reduce(0) { count, pages in
@@ -84,7 +84,7 @@ class Solve5: PuzzleSolver {
 		}
 		return ordered
 	}
-	
+
 	func solveB(_ fileName: String) -> Int {
 		let job = load(fileName)
 		let failed = job.pages.filter { !passes(job.orderings, $0) }

@@ -13,7 +13,7 @@ struct Test2024 {
 
 		let puzzles = Puzzles2024()
 
-		puzzles.puzzles.puzzles.forEach { puzzle in
+		for puzzle in puzzles.puzzles.puzzles {
 			print("Testing \(puzzle.id): \(puzzle.name)")
 			testOne(puzzle.solver)
 		}

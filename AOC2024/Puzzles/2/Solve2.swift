@@ -39,10 +39,10 @@ class Solve2: PuzzleSolver {
 				return step >= 1 && step <= 3
 			}
 	}
-	
+
 	func solveA(_ fileName: String) -> Int {
 		let lines = FileHelper.loadAndTokenize(fileName).filter { !$0.isEmpty }
-		
+
 		return lines.reduce(0) { count, line in
 			let levels = line.map { Int($0)! }
 			return count + (isSafe(levels) ? 1 : 0)
@@ -51,14 +51,14 @@ class Solve2: PuzzleSolver {
 
 	func solveB(_ fileName: String) -> Int {
 		let lines = FileHelper.loadAndTokenize(fileName).filter { !$0.isEmpty }
-		
+
 		return lines.reduce(0) { count, line in
 			let levels = line.map { Int($0)! }
 			if isSafe(levels) {
 				return count + 1
 			}
 			// Try removing the levels to see if one is safe.
-			for index in 0 ..< levels.count  {
+			for index in 0 ..< levels.count {
 				var dup = levels
 				dup.remove(at: index)
 				if isSafe(dup) {

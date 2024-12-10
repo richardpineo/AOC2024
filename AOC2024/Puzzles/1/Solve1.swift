@@ -30,10 +30,10 @@ class Solve1: PuzzleSolver {
 			lhs.append(Int(line[0])!)
 			rhs.append(Int(line[3])!)
 		}
-		
+
 		lhs.sort()
 		rhs.sort()
-		
+
 		var sum = 0
 		for index in 0 ..< lhs.count {
 			sum += abs(rhs[index] - lhs[index])
@@ -53,7 +53,7 @@ class Solve1: PuzzleSolver {
 		func rhsOccurrence(_ val: Int) -> Int {
 			rhs.count { $0 == val }
 		}
-		
+
 		var score = 0
 		for val in lhs {
 			score += val * rhsOccurrence(val)
