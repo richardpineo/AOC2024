@@ -47,6 +47,7 @@
 				Puzzles/5/Solve5.swift,
 				Puzzles/6/Solve6.swift,
 				Puzzles/7/Solve7.swift,
+				Puzzles/8/Solve8.swift,
 				Puzzles2024.swift,
 			);
 			target = BF5A38972CFD46B9007D940A /* AOC2024Tests */;
