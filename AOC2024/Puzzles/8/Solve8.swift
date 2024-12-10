@@ -1,7 +1,7 @@
 
+import Algorithms
 import AOCLib
 import Foundation
-import Algorithms
 
 class Solve8: PuzzleSolver {
 	func solveAExamples() -> Bool {
@@ -9,11 +9,12 @@ class Solve8: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example8") == 0
+		solveB("Example8easy") == 9 &&
+			solveB("Example8") == 34
 	}
 
 	var answerA = "249"
-	var answerB = ""
+	var answerB = "905"
 
 	func solveA() -> String {
 		solveA("Input8").description
@@ -22,24 +23,29 @@ class Solve8: PuzzleSolver {
 	func solveB() -> String {
 		solveB("Input8").description
 	}
-	
-	func solveA(_ fileName: String) -> Int {
-		let grid = Grid2D(fileName: fileName)
-		
+
+	func findAntennas(_ grid: Grid2D) -> [Character: [Position2D]] {
 		var antennas: [Character: [Position2D]] = [:]
-		
-		grid.allPositions.forEach { position in
+
+		for position in grid.allPositions {
 			let v = grid.value(position)
 			if v == "." || v == "#" {
-				return
+				continue
 			}
 			var antennaPositions = antennas[v] ?? []
 			antennaPositions.append(position)
 			antennas[v] = antennaPositions
 		}
-		
+
+		return antennas
+	}
+
+	func solveA(_ fileName: String) -> Int {
+		let grid: Grid2D = .init(fileName: fileName)
+		let antennas = findAntennas(grid)
+
 		var antinodes: Set<Position2D> = .init()
-		
+
 		for antenna in antennas {
 			for pair in antenna.value.combinations(ofCount: 2) {
 				let dx = pair[0].x - pair[1].x
@@ -49,12 +55,46 @@ class Solve8: PuzzleSolver {
 				antinodes.insert(.init(pair[1].x - dx, pair[1].y - dy))
 			}
 		}
-		
+
 		let validAntinodes = antinodes.filter { grid.valid($0) }
 		return validAntinodes.count
 	}
-	
+
 	func solveB(_ fileName: String) -> Int {
-		0
+		let grid: Grid2D = .init(fileName: fileName)
+		let antennas = findAntennas(grid)
+
+		var antinodes: Set<Position2D> = .init()
+
+		for antenna in antennas {
+			for pair in antenna.value.combinations(ofCount: 2) {
+				let oneSlope = MathHelper.reducedSlope(pair[0], pair[1])
+				let anotherSlope: Position2D = .init(-oneSlope.x, -oneSlope.y)
+
+				let master = pair[0]
+				antinodes.insert(master)
+				var oneWay = master
+				var orAnother = master
+				var done = false
+				while !done {
+					oneWay = oneWay.offset(oneSlope)
+					orAnother = orAnother.offset(anotherSlope)
+					done = true
+					if grid.valid(oneWay) {
+						antinodes.insert(oneWay)
+						done = false
+					}
+					if grid.valid(orAnother) {
+						antinodes.insert(orAnother)
+						done = false
+					}
+				}
+			}
+		}
+
+		let antinodeGrid = Grid2D(positions: Array(antinodes), value: "#", repeating: ".")
+		// print(grid.debugDisplay)
+		// print(antinodeGrid.debugDisplay)
+		return antinodes.count
 	}
 }
