@@ -8,11 +8,11 @@ class Solve9: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example9") == 0
+		solveB("Example9") == 2858
 	}
 
 	var answerA = "6430446922192"
-	var answerB = ""
+	var answerB = "6460170593016"
 
 	func solveA() -> String {
 		solveA("Input9").description
@@ -22,22 +22,24 @@ class Solve9: PuzzleSolver {
 		solveB("Input9").description
 	}
 
+	let spaceId: Int = -1
+
 	func checksum(_ contents: [Int]) -> Int {
 		var sum = 0
 		for index in 0..<contents.count {
-			sum += index * contents[index]
+			if contents[index] != spaceId {
+				sum += index * contents[index]
+			}
 		}
 		return sum
 	}
 	
-	func solveA(_ fileName: String) -> Int {
+	func load(_ fileName: String) -> [Int] {
 		let line = FileHelper.load(fileName)![0]
 		if line.count % 2 != 1 {
-			return -666
+			return []
 		}
-		
-		let spaceId: Int = -1
-		
+				
 		var contents: [Int] = []
 		var id: Int = 0
 		for index in stride(from: 0, to: line.count, by: 2) {
@@ -53,6 +55,12 @@ class Solve9: PuzzleSolver {
 			}
 		}
 		
+		return contents
+	}
+	
+	func solveA(_ fileName: String) -> Int {
+		var contents = load(fileName)
+		
 		while contents.contains(spaceId) {
 			let last = contents.popLast()!
 			if last == spaceId {
@@ -66,6 +74,41 @@ class Solve9: PuzzleSolver {
 	}
 
 	func solveB(_ fileName: String) -> Int {
-		fileName.count
+		var contents = load(fileName)
+		
+		var id = contents.max()!
+		
+		func findSpace(size: Int, maxIndex: Int) -> Int? {
+			var index = 0
+			while index < maxIndex {
+				var spaceCount = 0
+				var spaceIndex = index
+				while contents[spaceIndex] == spaceId {
+					spaceCount += 1
+					spaceIndex += 1
+					if spaceCount >= size {
+						return index
+					}
+				}
+				index = spaceIndex + 1
+			}
+			return nil
+		}
+		
+		while id >= 1 {
+			let size = contents.count { $0 == id }
+			let idStart = contents.firstIndex(of: id)!
+			
+			if let spaceIndex = findSpace(size: size, maxIndex: idStart) {
+				for count in 0 ..< size {
+					contents[spaceIndex + count] = id
+					contents[idStart + count] = spaceId
+				}
+			}
+			
+			id -= 1
+		}
+			
+		return checksum(contents)
 	}
 }
