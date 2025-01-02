@@ -8,11 +8,11 @@ class Solve10: PuzzleSolver {
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example10") == 0
+		solveB("Example10") == 81
 	}
 
 	var answerA = "548"
-	var answerB = ""
+	var answerB = "1252"
 
 	func solveA() -> String {
 		solveA("Input10").description
@@ -23,10 +23,10 @@ class Solve10: PuzzleSolver {
 	}
 
 	func score(map: Grid2D, pos: Position2D, trail: [Position2D], peaks: inout
-	Set<Position2D>) -> Int {
+			   Set<Position2D>, useRanking: Bool) -> Int {
 		let current = Int(String(map.value(pos)))!
 		if current == 9 {
-			if peaks.contains(pos) {
+			if !useRanking && peaks.contains(pos) {
 				return 0
 			}
 			peaks.insert(pos)
@@ -37,26 +37,28 @@ class Solve10: PuzzleSolver {
 			map.valid($0) && Int(String(map.value($0))) == current + 1 && !trail.contains($0)
 		}
 		return nextSteps.reduce(0) { [trail] total, pos in
-			total + score(map: map, pos: pos, trail: trail + [pos], peaks: &peaks)
+			total + score(map: map, pos: pos, trail: trail + [pos], peaks: &peaks, useRanking: useRanking)
 		}
 	}
 
-	func solveA(_ fileName: String) -> Int {
+	func solve(_ fileName: String, useRanking: Bool) -> Int {
 		let map = Grid2D(fileName: fileName)
 		let trailheads = map.allPositions.filter {
 			map.value($0) == "0"
 		}
 		let total = trailheads.reduce(0) { total, pos in
 			var peaks = Set<Position2D>()
-			let trailScore = score(map: map, pos: pos, trail: [pos], peaks: &peaks)
-			print("Trailhead \(pos.displayString): \(trailScore)")
+			let trailScore = score(map: map, pos: pos, trail: [pos], peaks: &peaks, useRanking: useRanking)
 			return total + trailScore
 		}
-		print("Total: \(total)")
 		return total
+	}
+	
+	func solveA(_ fileName: String) -> Int {
+		solve(fileName, useRanking: false)
 	}
 
 	func solveB(_ fileName: String) -> Int {
-		fileName.count
+		solve(fileName, useRanking: true)
 	}
 }
