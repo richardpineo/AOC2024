@@ -4,23 +4,24 @@ import Foundation
 
 class Solve11: PuzzleSolver {
 	func solveAExamples() -> Bool {
-		solveA("Example11", numBlinks: 6) == 22 &&
-		solveA("Example11", numBlinks: 25) == 55312
+		solve("Example11", numBlinks: 6) == 22 &&
+		solve("Example11", numBlinks: 25) == 55312
 	}
 
 	func solveBExamples() -> Bool {
-		solveB("Example11") == 0
+		// No examples
+		true
 	}
 
 	var answerA = "186203"
 	var answerB = ""
 
 	func solveA() -> String {
-		solveA("Input11", numBlinks: 25).description
+		solve("Input11", numBlinks: 25).description
 	}
 
 	func solveB() -> String {
-		solveB("Input11").description
+		solve("Input11", numBlinks: 75).description
 	}
 	
 	func blink(stones: inout Array<Int>) {
@@ -45,9 +46,10 @@ class Solve11: PuzzleSolver {
 			
 			index += 1
 		}
+		print("BLINK: now there are \(stones.count)")
 	}
 	
-	func solveA(_ fileName: String, numBlinks: Int) -> Int {
+	func solve(_ fileName: String, numBlinks: Int) -> Int {
 		var stones: Array<Int> = FileHelper.loadAndTokenize(fileName)[0].map { Int($0)! }
 		print("Starting \(numBlinks): " + stones.debugDescription)
 		for _ in 0 ..< numBlinks {
@@ -55,9 +57,5 @@ class Solve11: PuzzleSolver {
 		}
 		print("After \(numBlinks) blinks: \(stones.count)")
 		return stones.count
-	}
-
-	func solveB(_ fileName: String) -> Int {
-		fileName.count
 	}
 }
