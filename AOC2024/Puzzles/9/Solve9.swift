@@ -26,41 +26,41 @@ class Solve9: PuzzleSolver {
 
 	func checksum(_ contents: [Int]) -> Int {
 		var sum = 0
-		for index in 0..<contents.count {
+		for index in 0 ..< contents.count {
 			if contents[index] != spaceId {
 				sum += index * contents[index]
 			}
 		}
 		return sum
 	}
-	
+
 	func load(_ fileName: String) -> [Int] {
 		let line = FileHelper.load(fileName)![0]
 		if line.count % 2 != 1 {
 			return []
 		}
-				
+
 		var contents: [Int] = []
-		var id: Int = 0
+		var id = 0
 		for index in stride(from: 0, to: line.count, by: 2) {
-			let blockFile = Int(String(line.character(at:index)))!
+			let blockFile = Int(String(line.character(at: index)))!
 			let file: [Int] = .init(repeating: id, count: blockFile)
 			contents.append(contentsOf: file)
 			id += 1
-			
+
 			if index + 1 < line.count {
-				let blockSpace = Int(String(line.character(at:index + 1)))!
+				let blockSpace = Int(String(line.character(at: index + 1)))!
 				let space: [Int] = .init(repeating: spaceId, count: blockSpace)
 				contents.append(contentsOf: space)
 			}
 		}
-		
+
 		return contents
 	}
-	
+
 	func solveA(_ fileName: String) -> Int {
 		var contents = load(fileName)
-		
+
 		while contents.contains(spaceId) {
 			let last = contents.popLast()!
 			if last == spaceId {
@@ -75,9 +75,9 @@ class Solve9: PuzzleSolver {
 
 	func solveB(_ fileName: String) -> Int {
 		var contents = load(fileName)
-		
+
 		var id = contents.max()!
-		
+
 		func findSpace(size: Int, maxIndex: Int) -> Int? {
 			var index = 0
 			while index < maxIndex {
@@ -94,21 +94,21 @@ class Solve9: PuzzleSolver {
 			}
 			return nil
 		}
-		
+
 		while id >= 1 {
 			let size = contents.count { $0 == id }
 			let idStart = contents.firstIndex(of: id)!
-			
+
 			if let spaceIndex = findSpace(size: size, maxIndex: idStart) {
 				for count in 0 ..< size {
 					contents[spaceIndex + count] = id
 					contents[idStart + count] = spaceId
 				}
 			}
-			
+
 			id -= 1
 		}
-			
+
 		return checksum(contents)
 	}
 }
