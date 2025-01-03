@@ -14,7 +14,7 @@ class Solve11: PuzzleSolver {
 	}
 
 	var answerA = "186203"
-	var answerB = ""
+	var answerB = "221291560078593"
 
 	func solveA() -> String {
 		solve("Input11", numBlinks: 25).description
@@ -24,38 +24,63 @@ class Solve11: PuzzleSolver {
 		solve("Input11", numBlinks: 75).description
 	}
 	
-	func blink(stones: inout Array<Int>) {
-		var index = 0
-		while index < stones.count {
-			let current = stones[index]
-			if current == 0 {
-				stones[index] = 1
-			} else {
-				let length = current.description.count
-				if length % 2  == 0 {
-					// even
-					let first = Int(current.description.subString(start: 0, count: length/2))!
-					let second = Int(current.description.subString(start: length/2, count: length/2))!
-					stones[index] = first
-					stones.insert(second, at: index+1)
-					index += 1
-				} else {
-					stones[index] = current * 2024
-				}
-			}
-			
-			index += 1
+	struct MemoizedBlink {
+		let first: Int
+		let second: Int?
+	}
+	var memoized: [Int: MemoizedBlink] = [:]
+	
+	struct Key: Hashable {
+		let stone: Int
+		let depth: Int
+	}
+	var cache: [Key: Int] = [:]
+	
+	func parse(stone: Int) -> MemoizedBlink {
+		if let found =  memoized[stone] {
+			return found
 		}
-		print("BLINK: now there are \(stones.count)")
+		let length =  Int(floor(log10(CGFloat(stone)))+1)
+		if length % 2 == 0 {
+			// even
+			let base = Int(pow(10, Double(length/2)))
+			let memo: MemoizedBlink =  .init(first: stone / base, second: stone % base)
+			memoized[stone] = memo
+			return memo
+		}
+		let memo: MemoizedBlink =  .init(first: stone * 2024, second: nil)
+		memoized[stone] = memo
+		return memo
 	}
 	
-	func solve(_ fileName: String, numBlinks: Int) -> Int {
-		var stones: Array<Int> = FileHelper.loadAndTokenize(fileName)[0].map { Int($0)! }
-		print("Starting \(numBlinks): " + stones.debugDescription)
-		for _ in 0 ..< numBlinks {
-			blink(stones: &stones)
+	func blink(stone: Int?, depth: Int) -> Int {
+		guard let stone else {
+			return 0
 		}
-		print("After \(numBlinks) blinks: \(stones.count)")
-		return stones.count
+		if depth == 0 {
+			return 1
+		}
+		if stone == 0 {
+			return blink(stone: 1, depth: depth - 1)
+		}
+		
+		let key: Key = .init(stone: stone, depth: depth)
+		if let found = cache[key] {
+			return found
+		}
+	
+		let blinked = parse(stone: stone)
+		let val = blink(stone: blinked.first, depth: depth - 1) +
+			blink(stone: blinked.second, depth: depth - 1)
+		cache[key] = val
+		return val
+	}
+
+	func solve(_ fileName: String, numBlinks: Int) -> Int {
+		let stones = FileHelper.loadAndTokenize(fileName)[0].map { Int($0)! }
+		let count = stones.reduce(0) {
+			$0 + blink(stone: $1, depth: numBlinks)
+		}
+		return count
 	}
 }
