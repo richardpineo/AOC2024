@@ -23,7 +23,8 @@ class Solve10: PuzzleSolver {
 	}
 
 	func score(map: Grid2D, pos: Position2D, trail: [Position2D], peaks: inout
-			   Set<Position2D>, useRanking: Bool) -> Int {
+		Set<Position2D>, useRanking: Bool) -> Int
+	{
 		let current = Int(String(map.value(pos)))!
 		if current == 9 {
 			if !useRanking && peaks.contains(pos) {
@@ -53,7 +54,7 @@ class Solve10: PuzzleSolver {
 		}
 		return total
 	}
-	
+
 	func solveA(_ fileName: String) -> Int {
 		solve(fileName, useRanking: false)
 	}
